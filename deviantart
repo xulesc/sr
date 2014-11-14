@@ -1,0 +1,4 @@
+#!/bin/sh
+# $Id$
+# elvis: deviantart		-- Search deviantart (www.deviantart.com)
+. surfraw || exit 1
