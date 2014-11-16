@@ -7,7 +7,7 @@ w3_usage_hook () {
     cat <<EOF
 Usage: $w3_argv0 [options] [search words]...
 Description:
-  Surfraw show bug by id on custom bugzilla
+  Deviant art search word global
 EOF
     w3_global_usage
 }
