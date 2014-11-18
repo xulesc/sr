@@ -7,12 +7,68 @@ w3_usage_hook () {
     cat <<EOF
 Usage: $w3_argv0 [options] [search words]...
 Description:
-  Surfraw show bug by id on custom bugzilla
+  Surfraw show search results on deviant art (www.deviantart.com)
+Local options:
+  -category=  Category to search
+            All               | Default if nothing is specified
+            Digital           | Digital Art 
+            Traditional       | Traditional Art
+            Photography       | 
+            Artisan           | Artisan Craft
+            Literature        | 
+            Film              | Film & Animation  
+            Motion            | Motion Books
+            Designs           | Designs and Interfaces
+            Custom            | Customization
+            Cartoon           | Cartoons and Comics
+            Manga             | Manga and Anime
+            Anthro            | 
+            FanArt            | Fan Art
+            Resources         | Resources and Stock Images
+            Community         | Community Projects
+            Contests          |
+            Journals          |
+            Scraps            | Scraps
 EOF
     w3_global_usage
 }
 
+w3_config_hook () {
+    def   SURFRAW_da_category all
+}
+
+
+w3_parse_option_hook () {
+    opt="$1"
+    optarg="$2"
+    case "$opt" in
+        -category=Digital)     setopt SURFRAW_da_category digitalart      ;;
+        -category=Traditional) setopt SURFRAW_da_category traditional     ;;
+        -category=Photography) setopt SURFRAW_da_category photography     ;;
+	-category=Artisan)     setopt SURFRAW_da_category artisan         ;;
+	-category=Literature)  setopt SURFRAW_da_category literature      ;;
+	-category=Film)        setopt SURFRAW_da_category film            ;;
+	-category=Motion)      setopt SURFRAW_da_category motionbooks     ;;
+	-category=Designs)     setopt SURFRAW_da_category designs         ;;
+	-category=Custom)      setopt SURFRAW_da_category customization   ;;
+	-category=Cartoon)     setopt SURFRAW_da_category cartoons        ;;
+	-category=Manga)       setopt SURFRAW_da_category manga           ;;
+	-category=Anthro)      setopt SURFRAW_da_category anthro          ;;
+	-category=FanArt)      setopt SURFRAW_da_category fanart          ;;
+	-category=Resources)   setopt SURFRAW_da_category resources       ;;
+	-category=Community)   setopt SURFRAW_da_category projects        ;;
+	-category=Contests)    setopt SURFRAW_da_category contests        ;;
+	-category=Journals)    setopt SURFRAW_da_category journals        ;;
+	-category=Scraps)      setopt SURFRAW_da_category scraps          ;;
+        -category=*)           setopt SURFRAW_da_category $optarg ;;
+        *) return 1 ;;
+    esac
+    return 0
+}
+
 DAURL="http://www.deviantart.com/browse/all"
+
+
 w3_config
 w3_parse_args "$@"
 # w3_args now contains a list of arguments
@@ -20,5 +76,5 @@ if test -z "$w3_args"; then
     w3_browse_url "$DAURL"
 else
     escaped_args=`w3_url_of_arg $w3_args`
-    w3_browse_url "$DAURL/?qh=&section=&global=1&q=${escaped_args}"
+    w3_browse_url "$DAURL/${SURFRAW_da_category}/?qh=&section=&global=1&q=${escaped_args}"
 fi
